@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/server.js",
     "browserify": "browserify -t [ babelify --presets [ react ] ] client/src/index.js -o client/build/app.js",
-    "watchify": "watchify -t [ babelify --presets [ react ] ] client/src/index.js -o client/build/app.js"
+    "watchify": "watchify -t [ babelify --presets [ react ] ] client/src/index.js -o client/build/app.js",
+    "watchify2": "watchify -t [ babelify --presets [ react ] ] client/src/d3/simulate.js -o client/build/simulate.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "express": "^4.14.0",
     "materialize": "^1.0.0",
     "nodemon": "^1.11.0",
+    "path": "^0.12.7",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-materialize": "^0.17.0",
