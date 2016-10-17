@@ -1,7 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var App = require('./components/App.jsx');
 
 ReactDOM.render(
-  <h1>Hello World</h1>,
+  <App />,
   document.getElementById('content')
 );

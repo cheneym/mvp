@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/server.js",
-    "browserify": "browserify -t [ babelify --presets [ react ] ] client/src/index.js -o client/build/app.js"
+    "browserify": "browserify -t [ babelify --presets [ react ] ] client/src/index.js -o client/build/app.js",
+    "watchify": "watchify -t [ babelify --presets [ react ] ] client/src/index.js -o client/build/app.js"
   },
   "repository": {
     "type": "git",
@@ -27,8 +28,11 @@
     "browserify": "^13.1.0",
     "d3": "^4.2.7",
     "express": "^4.14.0",
+    "materialize": "^1.0.0",
     "nodemon": "^1.11.0",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "react-materialize": "^0.17.0",
+    "watchify": "^3.7.0"
   }
 }
