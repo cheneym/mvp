@@ -4,7 +4,9 @@
   "description": "Robot Sensing Visualizer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/server.js",
+    "browserify": "browserify -t [ babelify --presets [ react ] ] client/src/index.js -o client/build/app.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +20,15 @@
   },
   "homepage": "https://github.com/cheneym/2016-09-mvp#readme",
   "dependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "babelify": "^7.3.0",
     "body-parser": "^1.15.2",
+    "browserify": "^13.1.0",
     "d3": "^4.2.7",
     "express": "^4.14.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   }
 }
