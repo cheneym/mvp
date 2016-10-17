@@ -1,18 +1,24 @@
 var React = require('react');
 
 var SpecForm = (props) => (
-  <form className="specform col s12">
-    <div className="row">
-      <div className="input-field col s4">
-        <input placeholder="a" id="timecol" type="text" className="validate"/>
-      </div>
-      <div className="input-field col s4">
-        <input placeholder="b" id="sensorcol" type="text" className="validate"/>
-      </div>
-      <div className="input-field col s4">
-        <input placeholder="c" id="positioncol" type="text" className="validate"/>
-      </div>
-    </div>
+  <form action="#">
+    <p>{props.forms[0].heading}</p>
+    <p>
+      <input name={props.forms[0].group} type="radio" id={props.forms[0].id + '1'} />
+      <label htmlFor={props.forms[0].id + '1'}>{props.forms[0].li1}</label>
+    </p>
+    <p>
+      <input name={props.forms[0].group} type="radio" id={props.forms[0].id + '2'} />
+      <label htmlFor={props.forms[0].id + '2'}>{props.forms[0].li2}</label>
+    </p>
+    <p>
+      <input name={props.forms[0].group} type="radio" id={props.forms[0].id + '3'}  />
+      <label htmlFor={props.forms[0].id + '3'}>{props.forms[0].li3}</label>
+    </p>
+      <p>
+        <input name={props.forms[0].group} type="radio" id={props.forms[0].id + '4'} />
+        <label htmlFor={props.forms[0].id + '4'}>{props.forms[0].li4}</label>
+    </p>
   </form>
 );
 

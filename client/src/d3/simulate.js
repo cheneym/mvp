@@ -14,6 +14,9 @@ var render = function(data) {
 
   var robotRadius = 20;
   var particleRadius = 2;
+  var initialPos = data[0].position;
+  var finalPos = data[data.length - 1].position;
+  var totalTime = 50 * data.length
 
   var robot = container
     .selectAll('.robot')
@@ -21,7 +24,7 @@ var render = function(data) {
     .enter()
     .append('circle')
     .attr('class', 'robot')
-    .attr('cx', w/8)
+    .attr('cx', initialPos)
     .attr('cy', h/2)
     .attr('r', robotRadius)
     .attr('fill', 'blue');
@@ -32,22 +35,23 @@ var render = function(data) {
     .enter()
     .append('circle')
     .attr('class', 'particle')
-    .attr('cx', +robot.attr('cx'))
+    .attr('cx', d => d.position)
     .attr('cy', +robot.attr('cy'))
     .attr('r', particleRadius);
 
   container.transition()
-      .duration(4000)
+      .duration(totalTime)
+      .ease(d3.easeLinear)
       .selectAll('.robot')
-      .attr('cx', 3 / 4 * w)
+      .attr('cx', finalPos)
       .attr('cy', h/2);
 
-  transition = container.transition().duration(750);
+  transition = container.transition().duration(100);
   var delay = (d, i) => i * 50;
   console.log(typeof robot.attr('cx'));
   transition.selectAll(".particle")
       .delay(delay)
-      .attr('cx', +robot.attr('cx'))
+      .attr('cx', d => d.position)
       .attr('cy', d => +robot.attr('cy') + d.distance);
 };
 
