@@ -35,6 +35,7 @@ var render = function() {
     .attr('cy', h/2)
     .attr('r', robotRadius)
     .attr('fill', 'blue');
+
 };
 
 render();
