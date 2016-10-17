@@ -1,6 +1,6 @@
 var d3 = require('d3');
 
-var render = function() {
+var render = function(data) {
   var h = window.innerHeight;
   var w = window.innerWidth;
   var randomX = function() { return Math.random () * w; };
@@ -12,19 +12,9 @@ var render = function() {
     .attr('width', w)
     .attr('height', h);
 
-  var particleRadius = 3;
-
-  var particle = container
-    .selectAll('.particle')
-    .data(d3.range(30))
-    .enter()
-    .append('circle')
-    .attr('class', 'particle')
-    .attr('cx', randomX)
-    .attr('cy', randomY)
-    .attr('r', particleRadius);
-
   var robotRadius = 20;
+  var particleRadius = 1;
+
   var robot = container
     .selectAll('.robot')
     .data(d3.range(1))
@@ -36,6 +26,25 @@ var render = function() {
     .attr('r', robotRadius)
     .attr('fill', 'blue');
 
+  var particle = container
+    .selectAll('.particle')
+    .data(data)
+    .enter()
+    .append('circle')
+    .attr('class', 'particle')
+    .attr('cx', w/2)
+    .attr('cy', h/2)
+    .attr('r', particleRadius);
+    // .transition()
+    // .duration(1000)
+
+    var transition = container.transition().duration(750);
+    var delay = (d, i) => i * 50 };
+
+    transition.selectAll(".particle")
+        .delay(delay)
+        .attr('cx', d => d.time)
+        .attr('cy', d => d.distance);
 };
 
-render();
+d3.json('http://localhost:8000/data', render);
