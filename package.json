@@ -1,0 +1,26 @@
+{
+  "name": "2016-09-mvp",
+  "version": "1.0.0",
+  "description": "Robot Sensing Visualizer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cheneym/2016-09-mvp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cheneym/2016-09-mvp/issues"
+  },
+  "homepage": "https://github.com/cheneym/2016-09-mvp#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "d3": "^4.2.7",
+    "express": "^4.14.0",
+    "nodemon": "^1.11.0"
+  }
+}
