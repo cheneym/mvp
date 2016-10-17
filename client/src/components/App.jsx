@@ -1,5 +1,6 @@
 var React = require('react');
 var Nav = require('./Nav.jsx');
+var SpecForm = require('./SpecForm.jsx');
 
 class App extends React.Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class App extends React.Component {
     return (
       <div className="container">
         <Nav />
-        <h1>Yolo World</h1>
+        <SpecForm />
       </div>
     )
   }
