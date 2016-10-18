@@ -74,6 +74,21 @@ app.post('/configs', function(req, res) {
   });
 });
 
+app.get('/clear', (req, res) => {
+  Point.remove({}, (err, status) => {
+    if (err) {
+      res.status(500).send(err)
+    } else {
+      Setting.remove({}, (err, status) => {
+        if (err) {
+          res.status(500).send(err)
+        } else {
+          res.redirect('/home');
+        }
+      })
+    }
+  });
+});
 
 app.listen(port);
 

@@ -67,9 +67,9 @@ var resolveYPosition = (position, robotYPos, radius) => {
   }
 };
 
+var render = (config) => {
+  if (data.length === 0) { return; }
 
-
-var render = (config, data) => {
   var h = window.innerHeight;
   var w = window.innerWidth;
 
@@ -85,6 +85,8 @@ var render = (config, data) => {
   var initialYPos = data[0].yposition;
   var finalPos = data[data.length - 1].position;
   var totalTime = 50 * data.length
+  var colors = ['blue', 'green', 'cyan', 'yellow'];
+
   var robot = container
     .selectAll('.robot')
     .data(d3.range(1))
@@ -94,7 +96,7 @@ var render = (config, data) => {
     .attr('cx', initialXPos)
     .attr('cy', initialYPos)
     .attr('r', robotRadius)
-    .attr('fill', 'blue');
+    .attr('fill', 'red');
 
   var robotMove = (element, index) => {
     if (index >= data.length) { return; }
@@ -103,13 +105,15 @@ var render = (config, data) => {
       .attr('cy', data[index].yposition)
       .on('end', () => {
         robotMove(d3.select('.robot'), index + 1);
+        currIndex++;
+
       });
   }
 
-  robotMove(d3.select('.robot'), 0);
-
+  robotMove(d3.select('.robot'), currIndex);
 
   var particleMove = (className, index, sensorNum) => {
+    if (index >= data.length) { return; }
     var elements = container.selectAll('.' + className);
 
     var sensorPosition = config['s' + sensorNum + 'position'];
@@ -127,6 +131,7 @@ var render = (config, data) => {
       .attr('cx', startX)
       .attr('cy', startY)
       .attr('r', particleRadius)
+      .attr('fill', colors[sensorNum])
       .transition().duration(50).ease(d3.easeLinear)
       .attr('cx', d => dx + resolveXPosition(fireDirection, +robot.attr('cx'), d['distance' + sensorNum]))
       .attr('cy', d => dy + resolveYPosition(fireDirection, +robot.attr('cy'), d['distance' + sensorNum]))
@@ -136,11 +141,29 @@ var render = (config, data) => {
   var class1 = 'particle1';
   var class2 = 'particle2';
   var class3 = 'particle3';
-  particleMove(class1, 0, 1);
-  particleMove(class2, 0, 2);
-  particleMove(class3, 0, 3);
+  particleMove(class1, currIndex, 1);
+  particleMove(class2, currIndex, 2);
+  particleMove(class3, currIndex, 3);
 };
 
-d3.json('http://localhost:8000/configs', function(config) {
-  d3.json('http://localhost:8000/data', render.bind(null, config));
-});
+var fetch = () => {
+  console.log('hello');
+  d3.json('http://localhost:8000/configs', config => {
+    d3.json('http://localhost:8000/data', points => {
+      data = points;
+      render(config);
+    });
+  });  
+}
+
+var currIndex = 0;
+var data = [];
+
+fetch();
+d3.interval(() => {
+  // console.log('data', data.length);
+  // console.log('currIndex', currIndex);
+  if (data.length === currIndex) {
+    fetch();
+  }
+}, 2000);

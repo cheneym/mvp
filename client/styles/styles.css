@@ -2,10 +2,14 @@ nav {
   background-color: blue;
 }
 
-.particle {
+.particle1 {
   fill: red;
 }
 
 .particle2 {
   fill: green;
+}
+
+.particle2 {
+  fill: cyan;
 }
