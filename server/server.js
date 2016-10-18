@@ -4,6 +4,10 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var Promise = require('bluebird');
 var fs = Promise.promisifyAll(require('fs'));
+var Setting = require('./db/models/settings');
+var Point = require('./db/models/points');
+var db = require('./db/config');
+
 var port = 8000;
 
 app.use(express.static(__dirname + '/../client'));

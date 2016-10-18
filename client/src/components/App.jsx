@@ -63,8 +63,7 @@ class App extends React.Component {
                 li3: 'Front',
                 li4: 'Back',
                 group: 'group1',
-                id: 'col1',
-
+                id: 'col1'
               }} clickHandler={this.col1ClickHandler.bind(this)}/>
             </div>
             <div className="col s4">
@@ -75,7 +74,7 @@ class App extends React.Component {
                 li3: 'Left',
                 li4: 'Right',
                 group: 'group1',
-                id: 'col2',
+                id: 'col2'
               }} clickHandler={this.col2ClickHandler.bind(this)}/>
             </div>
           </div>

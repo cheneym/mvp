@@ -98,6 +98,7 @@ var render = (config, data) => {
     .attr('fill', 'blue');
 
   var robotMove = (element, index) => {
+    if (index >= data.length) { return; }
     element.transition().duration(50).ease(d3.easeLinear)
       .attr('cx', data[index].xposition)
       .attr('cy', data[index].yposition)
@@ -107,7 +108,7 @@ var render = (config, data) => {
   }
 
   robotMove(d3.select('.robot'), 0);
-  
+
   var tempConfig = convertDirection(config);
   var particleMove = (elements, index) => {
     var startX = resolveXPosition(config, +robot.attr('cx'), particleRadius * 10);
