@@ -8,7 +8,7 @@ var rotateLeft = (position) => {
     'Left': 'Front'
   };
   return obj[position];
-}
+};
 
 var rotateRight = (position) => {
   var obj = {
@@ -18,7 +18,7 @@ var rotateRight = (position) => {
     'Left': 'Back'
   };
   return obj[position];
-}
+};
 
 var reverse = (position) => {
   var obj = {
@@ -28,46 +28,45 @@ var reverse = (position) => {
     'Right': 'Left'
   };
   return obj[position];
-}
+};
 
-var resolveXPosition = (config, robotXPos, radius) => {
-  if (config.s1position === 'Left') {
+var convertDirection = (orientation, position) => {
+  var fireDirection = position;
+  if (orientation === null) {
+    orientation = 'Forward';
+  }
+  if (orientation === 'Forward') {
+    fireDirection = position;
+  } else if (orientation === 'Backward') {
+    fireDirection = reverse(position);
+  } else if (orientation === 'Left') {
+    fireDirection = rotateRight(position);
+  } else {
+    fireDirection = rotateLeft(position);
+  }
+  return fireDirection;
+};
+
+var resolveXPosition = (position, robotXPos, radius) => {
+  if (position === 'Left') {
     return robotXPos - radius;
-  } else if (config.s1position === 'Right') {
+  } else if (position === 'Right') {
     return robotXPos + radius;
   } else {
     return robotXPos;
   }
 };
 
-var resolveYPosition = (config, robotYPos, radius) => {
-  if (config.s1position === 'Front') {
+var resolveYPosition = (position, robotYPos, radius) => {
+  if (position === 'Front') {
     return robotYPos - radius;
-  } else if (config.s1position === 'Back') {
+  } else if (position === 'Back') {
     return robotYPos + radius;
   } else {
     return robotYPos;
   }
 };
 
-var convertDirection = (config) => {
-  var tempConfig = {};
-  if (config.s1orientation === null) {
-    tempConfig.s1orientation = 'Forward';
-  } else {
-    tempConfig.s1orientation = config.s1orientation;
-  }
-  if (tempConfig.s1orientation === 'Forward') {
-    tempConfig.s1position = config.s1position;
-  } else if (tempConfig.s1orientation === 'Backward') {
-    tempConfig.s1position = reverse(config.s1position);
-  } else if (tempConfig.s1orientation === 'Left') {
-    tempConfig.s1position = rotateRight(config.s1position);
-  } else {
-    tempConfig.s1position = rotateLeft(config.s1position);
-  }
-  return tempConfig;
-};
 
 
 var render = (config, data) => {
@@ -109,26 +108,37 @@ var render = (config, data) => {
 
   robotMove(d3.select('.robot'), 0);
 
-  var tempConfig = convertDirection(config);
-  var particleMove = (elements, index) => {
-    var startX = resolveXPosition(config, +robot.attr('cx'), particleRadius * 10);
-    var startY = resolveYPosition(config, +robot.attr('cy'), particleRadius * 10);
+
+  var particleMove = (className, index, sensorNum) => {
+    var elements = container.selectAll('.' + className);
+
+    var sensorPosition = config['s' + sensorNum + 'position'];
+    var sensorOrientation  = config['s' + sensorNum + 'orientation'];
+    var fireDirection = convertDirection(sensorOrientation, sensorPosition);
+  
+    var startX = resolveXPosition(sensorPosition, +robot.attr('cx'), particleRadius * 10);
+    var startY = resolveYPosition(sensorPosition, +robot.attr('cy'), particleRadius * 10);
     var dx = startX - +robot.attr('cx');
     var dy = startY - +robot.attr('cy');
     elements.data(data.slice(0, index + 1))
       .enter()
       .append('circle')
-      .attr('class', 'particle')
+      .attr('class', className)
       .attr('cx', startX)
       .attr('cy', startY)
       .attr('r', particleRadius)
       .transition().duration(50).ease(d3.easeLinear)
-      .attr('cx', d => dx + resolveXPosition(tempConfig, +robot.attr('cx'), d.distance))
-      .attr('cy', d => dy + resolveYPosition(tempConfig, +robot.attr('cy'), d.distance))
-      .on('end', () => particleMove(container.selectAll('.particle'), index + 1));
+      .attr('cx', d => dx + resolveXPosition(fireDirection, +robot.attr('cx'), d['distance' + sensorNum]))
+      .attr('cy', d => dy + resolveYPosition(fireDirection, +robot.attr('cy'), d['distance' + sensorNum]))
+      .on('end', () => particleMove(className, index + 1, sensorNum));
   }
 
-  particleMove(container.selectAll('.particle'), 0);
+  var class1 = 'particle1';
+  var class2 = 'particle2';
+  var class3 = 'particle3';
+  particleMove(class1, 0, 1);
+  particleMove(class2, 0, 2);
+  particleMove(class3, 0, 3);
 };
 
 d3.json('http://localhost:8000/configs', function(config) {
