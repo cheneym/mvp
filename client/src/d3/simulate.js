@@ -41,9 +41,7 @@ var resolveXPosition = (config, robotXPos, radius) => {
 };
 
 var resolveYPosition = (config, robotYPos, radius) => {
-  if (config.s1position === null) {
-    config.s1position = 'Back'
-  } else if (config.s1position === 'Front') {
+  if (config.s1position === 'Front') {
     return robotYPos - radius;
   } else if (config.s1position === 'Back') {
     return robotYPos + radius;
@@ -64,9 +62,9 @@ var convertDirection = (config) => {
   } else if (tempConfig.s1orientation === 'Backward') {
     tempConfig.s1position = reverse(config.s1position);
   } else if (tempConfig.s1orientation === 'Left') {
-    tempConfig.s1position = rotateLeft(config.s1position);
-  } else {
     tempConfig.s1position = rotateRight(config.s1position);
+  } else {
+    tempConfig.s1position = rotateLeft(config.s1position);
   }
   return tempConfig;
 };
@@ -109,18 +107,23 @@ var render = (config, data) => {
   }
 
   robotMove(d3.select('.robot'), 0);
+  
+  var tempConfig = convertDirection(config);
   var particleMove = (elements, index) => {
-    var tempConfig = convertDirection(config);
+    var startX = resolveXPosition(config, +robot.attr('cx'), particleRadius * 10);
+    var startY = resolveYPosition(config, +robot.attr('cy'), particleRadius * 10);
+    var dx = startX - +robot.attr('cx');
+    var dy = startY - +robot.attr('cy');
     elements.data(data.slice(0, index + 1))
       .enter()
       .append('circle')
       .attr('class', 'particle')
-      .attr('cx', resolveXPosition(config, +robot.attr('cx'), particleRadius * 10))
-      .attr('cy', resolveYPosition(config, +robot.attr('cy'), particleRadius * 10))
+      .attr('cx', startX)
+      .attr('cy', startY)
       .attr('r', particleRadius)
       .transition().duration(50).ease(d3.easeLinear)
-      .attr('cx', d => resolveXPosition(tempConfig, +robot.attr('cx'), d.distance))
-      .attr('cy', d => resolveYPosition(tempConfig, +robot.attr('cy'), d.distance))
+      .attr('cx', d => dx + resolveXPosition(tempConfig, +robot.attr('cx'), d.distance))
+      .attr('cy', d => dy + resolveYPosition(tempConfig, +robot.attr('cy'), d.distance))
       .on('end', () => particleMove(container.selectAll('.particle'), index + 1));
   }
 
