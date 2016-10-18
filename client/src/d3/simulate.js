@@ -12,24 +12,25 @@ var render = function(data) {
 
   var robotRadius = 20;
   var particleRadius = 2;
-  var initialPos = data[0].position;
+  var initialXPos = data[0].xposition;
+  var initialYPos = data[0].yposition;
   var finalPos = data[data.length - 1].position;
   var totalTime = 50 * data.length
-
   var robot = container
     .selectAll('.robot')
     .data(d3.range(1))
     .enter()
     .append('circle')
     .attr('class', 'robot')
-    .attr('cx', initialPos)
-    .attr('cy', h/2)
+    .attr('cx', initialXPos)
+    .attr('cy', initialYPos)
     .attr('r', robotRadius)
     .attr('fill', 'blue');
 
   var robotMove = (element, index) => {
     element.transition().duration(50).ease(d3.easeLinear)
-      .attr('cx', data[index].position)
+      .attr('cx', data[index].xposition)
+      .attr('cy', data[index].yposition)
       .on('end', () => {
         robotMove(d3.select('.robot'), index + 1);
       });
