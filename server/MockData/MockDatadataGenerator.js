@@ -9,6 +9,7 @@ for (var i = 0; i < 400; i++) {
   var obj = {
     time: i,
     distance: 100 + 20 * Math.sin(i * Math.PI / 90),
+    distance2: 80 + 15 * Math.cos(i * Math.PI / 70),
     xposition: 3 * i,
     yposition: f(i)
   };

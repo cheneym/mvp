@@ -53,6 +53,23 @@ var render = function(data) {
   }
 
   particleMove(container.selectAll('.particle'), 0);
+
+  // var particleMove2 = (elements, index) => {
+  //   elements.data(data.slice(0, index + 1))
+  //     .enter()
+  //     .append('circle')
+  //     .attr('class', 'particle2')
+  //     .attr('cx', +robot.attr('cx'))
+  //     .attr('cy', +robot.attr('cy') - particleRadius * 10)
+  //     .attr('r', particleRadius)
+  //     .transition().duration(50).ease(d3.easeLinear)
+  //     .attr('cx', d => +robot.attr('cx'))
+  //     .attr('cy', d => +robot.attr('cy') - d.distance2)
+  //     .on('end', () => particleMove2(container.selectAll('.particle2'), index + 1));
+  // }
+
+  // particleMove2(container.selectAll('.particle2'), 0);
+
   // container.transition()
   //     .duration(totalTime)
   //     .ease(d3.easeLinear)
