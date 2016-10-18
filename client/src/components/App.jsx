@@ -18,7 +18,7 @@ class App extends React.Component {
               <h3>Sensor 1</h3>
             </div>
             <div className="col s4">
-              <SpecForm forms={[{
+              <SpecForm forms={{
                 heading: 'Position on Robot',
                 li1: 'Left',
                 li2: 'Right',
@@ -26,10 +26,10 @@ class App extends React.Component {
                 li4: 'Back',
                 group: 'group1',
                 id: 'col1'
-              }]}/>
+              }}/>
             </div>
             <div className="col s4">
-              <SpecForm forms={[{
+              <SpecForm forms={{
                 heading: 'Orientation',
                 li1: 'Forward',
                 li2: 'Backward',
@@ -37,7 +37,7 @@ class App extends React.Component {
                 li4: 'Right',
                 group: 'group2',
                 id: 'col2'
-              }]}/>
+              }}/>
             </div>
           </div>
         </div>
