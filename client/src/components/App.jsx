@@ -1,7 +1,7 @@
 var React = require('react');
 var Nav = require('./Nav.jsx');
 var SpecForm = require('./SpecForm.jsx');
-
+var $ = require('jQuery');
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -12,7 +12,7 @@ class App extends React.Component {
   }
 
   col1ClickHandler(e) {
-    var group = e.target.getAttribute('group');
+    var group = e.target.getAttribute('name');
     var position = e.target.nextSibling.textContent;
     if (group === 'group1') {
       this.setState({
@@ -22,7 +22,7 @@ class App extends React.Component {
   }
 
   col2ClickHandler(e) {
-    var group = e.target.getAttribute('group');
+    var group = e.target.getAttribute('name');
     var orientation = e.target.nextSibling.textContent;
     if (group === 'group1') {
       this.setState({
@@ -31,10 +31,25 @@ class App extends React.Component {
     }
   }
 
+  simHandler(e) {
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:8000/configs',
+      data: JSON.stringify(this.state),
+      contentType: 'application/json'
+    })
+    .done(function(data) {
+      console.log('successfully posted data');
+    })
+    .fail(function(jqXhr) {
+      console.log('failed to post data');
+    });
+  }
+
   render() {
     return (
       <div className="container">
-        <Nav />
+        <Nav simHandler={this.simHandler.bind(this)} />
         <div className="col s12">
           <div className="row">
             <div className="col s4">

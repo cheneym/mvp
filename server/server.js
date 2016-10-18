@@ -12,7 +12,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 
 app.get('/', function(req, res) {
-  res.end();
+  res.redirect('/home');
+});
+
+app.get('/home', function(req, res) {
+  res.sendFile(path.resolve(__dirname + '/../client/index.html'));
 });
 
 app.get('/simulate', function(req, res) {
@@ -30,6 +34,31 @@ app.get('/data', function(req, res) {
       res.end(err);
     });
 });
+
+app.get('/configs', function(req, res) {
+  var filePath = path.resolve(__dirname + '/MockData/configs.json');
+  fs.readFileAsync(filePath)
+    .then(function(text) {
+      res.writeHead(200);
+      res.end(text);
+    }).catch(function(err) {
+      res.writeHead(404);
+      res.end(err);
+    });
+});
+
+app.post('/configs', function(req, res) {
+  var filePath = path.resolve(__dirname + '/MockData/configs.json');
+
+  fs.writeFileAsync(filePath, JSON.stringify(req.body))
+    .then(function(status) {
+      res.end(status);
+    }).catch(function(err) {
+      res.writeHead(404);
+      res.end(err);
+    });
+});
+
 
 app.listen(port);
 
