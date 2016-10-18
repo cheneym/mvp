@@ -129,52 +129,6 @@ var render = (config, data) => {
   }
 
   particleMove(container.selectAll('.particle'), 0);
-
-  // var particleMove2 = (elements, index) => {
-  //   elements.data(data.slice(0, index + 1))
-  //     .enter()
-  //     .append('circle')
-  //     .attr('class', 'particle2')
-  //     .attr('cx', +robot.attr('cx'))
-  //     .attr('cy', +robot.attr('cy') - particleRadius * 10)
-  //     .attr('r', particleRadius)
-  //     .transition().duration(50).ease(d3.easeLinear)
-  //     .attr('cx', d => +robot.attr('cx'))
-  //     .attr('cy', d => +robot.attr('cy') - d.distance2)
-  //     .on('end', () => particleMove2(container.selectAll('.particle2'), index + 1));
-  // }
-
-  // particleMove2(container.selectAll('.particle2'), 0);
-
-  // container.transition()
-  //     .duration(totalTime)
-  //     .ease(d3.easeLinear)
-  //     .selectAll('.robot')
-  //     .attr('cx', finalPos)
-  //     .attr('cy', h/2);
-
-  // transition = container.transition().duration(100);
-  // var delay = (d, i) => i * 50;
-  // console.log(typeof robot.attr('cx'));
-  // transition.selectAll(".particle")
-  //     .delay(delay)
-  //     .attr('cx', d => d.position)
-  //     .attr('cy', d => +robot.attr('cy') + d.distance);
-
-  // var positionData = randomPositions(n);
-
-  //   var circles = svgContainer.selectAll('.enemy')
-  //                             .data(positionData);
-  //   var nodes = circles.data();
-  //   circles.transition().duration(timeDelay).attr('cx', function(d) { return d.x; })
-  //          .attr('cy', function(d) { return d.y; });
-  //   circles.enter()
-  //          .append('circle')
-  //          .attr('class', 'enemy')
-  //          .attr('cx', function(d) { return d.x; })
-  //          .attr('cy', function(d) { return d.y; })
-  //          .attr('r', function(d) { return r; });
-  //   circles.exit().remove();
 };
 
 d3.json('http://localhost:8000/configs', function(config) {

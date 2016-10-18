@@ -31,6 +31,30 @@ class App extends React.Component {
     }
   }
 
+  fileUploadHandler(e) {
+    console.log(e.target.files[0]);
+    var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function(e) {
+      if (e.target.readyState == FileReader.DONE) { // DONE == 2
+        var textContent = e.target.result;
+        $.ajax({
+          type: 'POST',
+          url: 'http://localhost:8000/data',
+          data: textContent,
+          contentType: 'application/json'
+        })
+        .done(function(data) {
+          console.log('successfully posted data');
+        })
+        .fail(function(jqXhr) {
+          console.log('failed to post data');
+        });
+      }
+    }
+    reader.readAsText(file);
+  }
+
   simHandler(e) {
     $.ajax({
       type: 'POST',
@@ -50,6 +74,20 @@ class App extends React.Component {
     return (
       <div className="container">
         <Nav simHandler={this.simHandler.bind(this)} />
+        
+        <form action="#">
+          <div className="file-field input-field">
+            <div className="btn">
+              <span>File</span>
+              <input onChange={this.fileUploadHandler} type="file"></input>
+            </div>
+            <div className="file-path-wrapper">
+              <input className="file-path validate" type="text"></input>
+            </div>
+          </div>
+        </form>
+
+
         <div className="col s12">
           <div className="row">
             <div className="col s4">

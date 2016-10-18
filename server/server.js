@@ -28,29 +28,43 @@ app.get('/simulate', (req, res) => {
 });
 
 app.get('/data', (req, res) => {
-  var filePath = path.resolve(__dirname + '/MockData/sine.json');
-  fs.readFileAsync(filePath)
-    .then(function(text) {
-      res.writeHead(200);
-      res.end(text);
-    }).catch(function(err) {
-      res.writeHead(404);
-      res.end(err);
-    });
-});
-
-app.get('/configs', (req, res) => {
-  Setting.findOne().sort('-created_at').exec((err, setting) => {
+  Point.find().sort('time').exec((err, points) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.status(200).send(setting);
+      res.status(200).send(points);
+    }
+  });  
+});
+
+app.post('/data', function(req, res) {
+  //clear collection
+  Point.remove({}, (err, status) => {
+    if (err) {
+      res.status(500).send(err)
+    }
+    //Add to collection
+    Point.collection.insert(req.body, (err, status) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.status(201).send(status);
+      }
+    });
+  })
+});
+
+app.get('/configs', (req, res) => {
+  Setting.find().sort('created_at').exec((err, settings) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(settings[settings.length - 1]);
     }
   });
 });
 
 app.post('/configs', function(req, res) {
-  var filePath = path.resolve(__dirname + '/MockData/configs.json');
   new Setting(req.body).save((err, status) => {
     if (err) {
       res.status(500).send(err);
