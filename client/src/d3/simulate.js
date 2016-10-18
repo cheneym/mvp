@@ -34,17 +34,24 @@ var render = function(data) {
         robotMove(d3.select('.robot'), index + 1);
       });
   }
-  robotMove(d3.select('.robot'), 0);
-  // var particle = container
-  //   .selectAll('.particle')
-  //   .data(data)
-  //   .enter()
-  //   .append('circle')
-  //   .attr('class', 'particle')
-  //   .attr('cx', d => d.position)
-  //   .attr('cy', +robot.attr('cy'))
-  //   .attr('r', particleRadius);
 
+  robotMove(d3.select('.robot'), 0);
+
+  var particleMove = (elements, index) => {
+    elements.data(data.slice(0, index + 1))
+      .enter()
+      .append('circle')
+      .attr('class', 'particle')
+      .attr('cx', d => +robot.attr('cx'))
+      .attr('cy', +robot.attr('cy') + particleRadius * 10)
+      .attr('r', particleRadius)
+      .transition().duration(50).ease(d3.easeLinear)
+      .attr('cx', d => +robot.attr('cx'))
+      .attr('cy', d => +robot.attr('cy') + d.distance)
+      .on('end', () => particleMove(container.selectAll('.particle'), index + 1));
+  }
+
+  particleMove(container.selectAll('.particle'), 0);
   // container.transition()
   //     .duration(totalTime)
   //     .ease(d3.easeLinear)
