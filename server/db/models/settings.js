@@ -9,6 +9,7 @@ var settingsSchema = mongoose.Schema({
   s3orientation: { type: String, required: false },
   s4position: { type: String, required: false },
   s4orientation: { type: String, required: false },
+  date: { type: Date, default: Date.now }
 });
 
 var Setting = mongoose.model('Setting', settingsSchema);

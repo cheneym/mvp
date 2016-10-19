@@ -11,10 +11,10 @@ var FormRow = (props) => (
       <div className="col s4">
         <SpecForm forms={{
           heading: 'Position on Robot',
-          li1: 'Left',
-          li2: 'Right',
-          li3: 'Front',
-          li4: 'Back',
+          li1: 'Front',
+          li2: 'Back',
+          li3: 'Left',
+          li4: 'Right',
           group: props.group,
           id: props.group + 'col1'
         }} clickHandler={props.clickHandlers[0]}/>

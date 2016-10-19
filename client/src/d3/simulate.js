@@ -67,36 +67,9 @@ var resolveYPosition = (position, robotYPos, radius) => {
   }
 };
 
+
 var render = (config) => {
   if (data.length === 0) { return; }
-
-  var h = window.innerHeight;
-  var w = window.innerWidth;
-
-  var container = d3
-    .select('body')
-    .append('svg')
-    .attr('width', w)
-    .attr('height', h);
-
-  var robotRadius = 20;
-  var particleRadius = 2;
-  var initialXPos = data[0].xposition;
-  var initialYPos = data[0].yposition;
-  var finalPos = data[data.length - 1].position;
-  var totalTime = 50 * data.length
-  var colors = ['blue', 'green', 'cyan', 'yellow'];
-
-  var robot = container
-    .selectAll('.robot')
-    .data(d3.range(1))
-    .enter()
-    .append('circle')
-    .attr('class', 'robot')
-    .attr('cx', initialXPos)
-    .attr('cy', initialYPos)
-    .attr('r', robotRadius)
-    .attr('fill', 'red');
 
   var robotMove = (element, index) => {
     if (index >= data.length) { return; }
@@ -141,16 +114,35 @@ var render = (config) => {
   var class1 = 'particle1';
   var class2 = 'particle2';
   var class3 = 'particle3';
+
   particleMove(class1, currIndex, 1);
-  particleMove(class2, currIndex, 2);
-  particleMove(class3, currIndex, 3);
+  if (config.s2position !== undefined) {
+    particleMove(class2, currIndex, 2);
+  }
+  if (config.s3position !== undefined) {
+    particleMove(class3, currIndex, 3);
+  }
 };
 
 var fetch = () => {
-  console.log('hello');
   d3.json('http://localhost:8000/configs', config => {
     d3.json('http://localhost:8000/data', points => {
       data = points;
+      if (!initialized) {
+        initialXPos = data[0].xposition;
+        initialYPos = data[0].yposition;
+
+        robot = container
+          .selectAll('.robot')
+          .data(d3.range(1))
+          .enter()
+          .append('circle')
+          .attr('class', 'robot')
+          .attr('cx', initialXPos)
+          .attr('cy', initialYPos)
+          .attr('r', robotRadius)
+          .attr('fill', 'red');
+      }
       render(config);
     });
   });  
@@ -158,12 +150,28 @@ var fetch = () => {
 
 var currIndex = 0;
 var data = [];
+var initialized = false;
+var robotRadius = 20;
+var particleRadius = 2;
+var totalTime = 50 * data.length
+var colors = ['blue', 'green', 'cyan', 'yellow'];
 
 fetch();
 d3.interval(() => {
-  // console.log('data', data.length);
-  // console.log('currIndex', currIndex);
   if (data.length === currIndex) {
     fetch();
   }
 }, 2000);
+
+var h = window.innerHeight;
+var w = window.innerWidth;
+
+var container = d3
+  .select('body')
+  .append('svg')
+  .attr('width', w)
+  .attr('height', h);
+
+var robot;
+var initialXPos;
+var initialYPos;

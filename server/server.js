@@ -55,7 +55,7 @@ app.post('/data', function(req, res) {
 });
 
 app.get('/configs', (req, res) => {
-  Setting.find().sort('created_at').exec((err, settings) => {
+  Setting.find().sort('date').exec((err, settings) => {
     if (err) {
       res.status(500).send(err);
     } else {
